@@ -18,16 +18,18 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="cursor-glow" id="cursorGlow"></div>
     <div class="palette-welcome" id="paletteWelcome" aria-hidden="true">
       <div class="palette-panel">
         <p class="eyebrow">TODAY'S COLOR</p>
-        <h2>今天想用哪一种蓝？</h2>
-        <p class="muted">每天打开时，为自己的节奏选一个颜色。页面会立即跟着变化。</p>
+        <h2>今天想生活在哪种颜色里？</h2>
+        <p class="muted">每种颜色都带着一套原创氛围画面。选一个接近今天心情的主题。</p>
         <div class="palette-grid" id="paletteGrid"></div>
         <label class="custom-color">
           <span>自定义今日颜色</span>
           <input id="customColor" type="color" value="#75b9df" />
         </label>
+        <button class="secondary-button" id="randomThemeButton" type="button">给我一个随机主题</button>
         <button class="secondary-button" id="closePaletteButton" type="button">沿用上次的颜色</button>
       </div>
     </div>
@@ -49,8 +51,34 @@
       </div>
     </header>
 
+    <nav class="quick-nav" aria-label="页面快捷导航">
+      <a href="#dailyCardMobile">今日</a>
+      <a href="#calendarSection">月历</a>
+      <a href="#missionSection">总任务</a>
+      <a href="#reviewForm">复盘</a>
+      <a href="#editorSection">编辑</a>
+    </nav>
+
     <main id="top">
-      <section class="hero">
+      <section class="hero reveal">
+        <div class="kinetic-field" aria-hidden="true">
+          <i class="kinetic-blob blob-one"></i>
+          <i class="kinetic-blob blob-two"></i>
+          <i class="kinetic-blob blob-three"></i>
+          <div class="cube-cluster">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="dot-matrix">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <strong class="theme-word" id="themeWord">AERO</strong>
+          <div class="interaction-layer" id="interactionLayer"></div>
+          <span class="floating-tag tag-one">PLAN / REVIEW</span>
+          <span class="floating-tag tag-two">PACE 01</span>
+          <span class="floating-tag tag-three">KEEP MOVING</span>
+        </div>
         <div class="hero-copy">
           <p class="eyebrow"><span>WEEK 01</span> · KEEP THE PACE</p>
           <h1>把想做的事，<br /><em>一件一件完成。</em></h1>
@@ -82,7 +110,19 @@
         </div>
       </section>
 
-      <section class="stats-grid">
+      <section class="playground reveal">
+        <div>
+          <p class="eyebrow">INTERACTIVE MODE</p>
+          <h2>先和今天打个招呼</h2>
+          <p class="muted" id="playgroundCopy">点击画面，留下一点属于今天的痕迹。</p>
+        </div>
+        <div class="playground-canvas" id="playgroundCanvas" aria-label="主题互动区域">
+          <strong id="playgroundWord">START</strong>
+          <span>CLICK / MOVE / PLAY</span>
+        </div>
+      </section>
+
+      <section class="stats-grid reveal">
         <article class="stat-card">
           <span class="stat-index">01</span>
           <p>最近 DDL</p>
@@ -103,8 +143,68 @@
         </article>
       </section>
 
-      <section class="content-grid">
-        <div class="main-column">
+      <section class="visual-grid reveal">
+        <article class="glass-card countdown-card">
+          <p class="eyebrow">NEXT DEADLINE</p>
+          <div class="countdown-layout">
+            <strong id="countdownDays">--</strong>
+            <div>
+              <h2 id="countdownTitle">正在整理下一站</h2>
+              <p id="countdownCopy">把最近的一件事先放在视线里。</p>
+            </div>
+          </div>
+          <div class="countdown-track"><i id="countdownProgress"></i></div>
+        </article>
+
+        <article class="glass-card backup-card">
+          <p class="eyebrow">YOUR DATA</p>
+          <h2>把积累握在自己手里</h2>
+          <p class="muted">接入云同步前，定期导出一份备份。换设备时也可以随时恢复。</p>
+          <div class="backup-actions">
+            <button class="small-action" id="exportButton" type="button">导出备份</button>
+            <label class="small-action upload-label">导入备份<input id="importInput" type="file" accept=".json,application/json" /></label>
+          </div>
+        </article>
+      </section>
+
+      <section class="mobile-first-daily reveal">
+        <section class="glass-card daily-card" id="dailyCardMobile">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">DAILY FOCUS</p>
+              <h2>今日推进</h2>
+            </div>
+            <span id="dailyCount">0 / 0</span>
+          </div>
+          <p class="muted">今天做多少件，由你决定。自动安排会优先照顾临近 DDL，也可以自己自由调整。</p>
+          <div class="daily-list" id="dailyList"></div>
+          <button class="secondary-button" id="addDailyButton" type="button">+ 增加今日任务</button>
+          <button class="secondary-button" id="refreshFocusButton" type="button">重新安排今日任务</button>
+        </section>
+      </section>
+
+      <section class="workspace-section calendar-priority reveal" id="calendarSection">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">MONTHLY VIEW</p>
+            <h2>接下来要做什么</h2>
+          </div>
+          <div class="calendar-nav">
+            <button class="icon-button" id="prevMonthButton" type="button" aria-label="上个月">‹</button>
+            <strong id="calendarTitle"></strong>
+            <button class="icon-button" id="nextMonthButton" type="button" aria-label="下个月">›</button>
+          </div>
+        </div>
+        <div class="calendar-card">
+          <div class="calendar-weekdays">
+            <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+      </section>
+
+      <section class="content-grid reveal">
+        <div class="main-column" id="missionSection">
           <div class="section-heading">
             <div>
               <p class="eyebrow">MISSION BOARD</p>
@@ -116,21 +216,6 @@
         </div>
 
         <aside class="side-column">
-          <section class="glass-card daily-card" id="dailyCard">
-            <div class="card-heading">
-              <div>
-                <p class="eyebrow">DAILY FOCUS</p>
-                <h2>今日推进</h2>
-              </div>
-              <span id="dailyCount">0 / 3</span>
-            </div>
-            <p class="muted">今天只照顾好三件事。完成一点，也是在认真向前走。</p>
-            <div class="daily-list" id="dailyList"></div>
-            <button class="secondary-button" id="refreshFocusButton" type="button">
-              重新安排今日任务
-            </button>
-          </section>
-
           <section class="glass-card rhythm-card">
             <p class="eyebrow">DAILY RHYTHM</p>
             <h2>固定节奏</h2>
@@ -178,7 +263,39 @@
         </aside>
       </section>
 
-      <section class="workspace-section">
+      <section class="workspace-section reveal" id="editorSection">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CONSISTENCY MAP</p>
+            <h2>你的积累正在发生</h2>
+          </div>
+          <span class="section-meta">LAST 12 WEEKS</span>
+        </div>
+        <div class="glass-card heatmap-card">
+          <div class="heatmap-grid" id="heatmapGrid"></div>
+          <div class="heatmap-legend"><span>少</span><i></i><i></i><i></i><i></i><span>多</span></div>
+        </div>
+      </section>
+
+      <section class="workspace-section split-section reveal">
+        <article class="glass-card weekly-card">
+          <p class="eyebrow">WEEKLY REVIEW</p>
+          <h2>这一周，你有在认真生活</h2>
+          <div class="weekly-stats">
+            <div><strong id="weeklyCompleted">0</strong><span>本周完成</span></div>
+            <div><strong id="weeklyRate">0%</strong><span>总体进度</span></div>
+            <div><strong id="weeklyFocus">--</strong><span>最需照顾</span></div>
+          </div>
+          <p class="weekly-copy" id="weeklyCopy"></p>
+        </article>
+        <article class="glass-card milestone-card">
+          <p class="eyebrow">RACE MILESTONES</p>
+          <h2>一站一站地完成</h2>
+          <div class="milestone-track" id="milestoneTrack"></div>
+        </article>
+      </section>
+
+      <section class="workspace-section reveal">
         <div class="section-heading">
           <div>
             <p class="eyebrow">PLAN STUDIO</p>
@@ -190,25 +307,6 @@
         <div class="editor-list" id="editorList"></div>
       </section>
 
-      <section class="workspace-section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">MONTHLY VIEW</p>
-            <h2>接下来要做什么</h2>
-          </div>
-          <div class="calendar-nav">
-            <button class="icon-button" id="prevMonthButton" type="button" aria-label="上个月">‹</button>
-            <strong id="calendarTitle"></strong>
-            <button class="icon-button" id="nextMonthButton" type="button" aria-label="下个月">›</button>
-          </div>
-        </div>
-        <div class="calendar-card">
-          <div class="calendar-weekdays">
-            <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
-          </div>
-          <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
-      </section>
     </main>
 
     <footer>
@@ -223,6 +321,7 @@
         <strong>+1</strong>
         <h2>这一小步，被好好记住了。</h2>
         <span id="rewardText">你正在慢慢接近想成为的自己。</span>
+        <small id="rewardBreak"></small>
       </div>
     </div>
 
