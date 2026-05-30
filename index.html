@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eaf5fc" />
+    <meta
+      name="description"
+      content="一颗沙莉 - 个人学习推进与每日复盘仪表盘"
+    />
+    <title>一颗沙莉 | Study Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="palette-welcome" id="paletteWelcome" aria-hidden="true">
+      <div class="palette-panel">
+        <p class="eyebrow">TODAY'S COLOR</p>
+        <h2>今天想用哪一种蓝？</h2>
+        <p class="muted">每天打开时，为自己的节奏选一个颜色。页面会立即跟着变化。</p>
+        <div class="palette-grid" id="paletteGrid"></div>
+        <label class="custom-color">
+          <span>自定义今日颜色</span>
+          <input id="customColor" type="color" value="#75b9df" />
+        </label>
+        <button class="secondary-button" id="closePaletteButton" type="button">沿用上次的颜色</button>
+      </div>
+    </div>
+    <div class="noise"></div>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="回到顶部">
+        <span class="brand-mark">S</span>
+        <span>
+          <strong>一颗沙莉</strong>
+          <small>PROJECT 01 · PERSONAL PACE</small>
+        </span>
+      </a>
+      <div class="topbar-actions">
+        <span class="live-dot"><i></i> IN PROGRESS</span>
+        <button class="icon-button" id="resetButton" type="button" title="重置本地数据">↻</button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>WEEK 01</span> · KEEP THE PACE</p>
+          <h1>把想做的事，<br /><em>一件一件完成。</em></h1>
+          <p class="hero-text" id="dailyLetter">
+            今天不用证明什么。先安静地完成手边的一小步，节奏会慢慢回到你身上。
+          </p>
+          <div class="hero-actions">
+            <button class="primary-button" id="focusButton" type="button">
+              <span>开始今日推进</span>
+              <b>→</b>
+            </button>
+            <p><strong id="todayDate"></strong><span>今日训练日</span></p>
+          </div>
+        </div>
+
+        <div class="progress-orbit" aria-label="总进度">
+          <svg viewBox="0 0 220 220" role="img">
+            <circle class="orbit-track" cx="110" cy="110" r="88"></circle>
+            <circle class="orbit-progress" id="orbitProgress" cx="110" cy="110" r="88"></circle>
+          </svg>
+          <div class="orbit-center">
+            <small>OVERALL</small>
+            <strong id="overallPercent">0%</strong>
+            <span id="overallCount">0 / 18 completed</span>
+          </div>
+          <i class="orbit-label label-top">01</i>
+          <i class="orbit-label label-right">PACE</i>
+          <i class="orbit-label label-bottom">26</i>
+        </div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-index">01</span>
+          <p>最近 DDL</p>
+          <strong id="nearestDdl">--</strong>
+          <small id="nearestDdlLabel">加载中</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-index">02</span>
+          <p>已完成步骤</p>
+          <strong id="completedStat">0</strong>
+          <small>每一步都算数</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-index">03</span>
+          <p>连续记录</p>
+          <strong id="streakStat">0 DAYS</strong>
+          <small>从今天开始积累</small>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <div class="main-column">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">MISSION BOARD</p>
+              <h2>本周任务</h2>
+            </div>
+            <span class="section-meta">DEADLINE MODE · ON</span>
+          </div>
+          <div class="subject-list" id="subjectList"></div>
+        </div>
+
+        <aside class="side-column">
+          <section class="glass-card daily-card" id="dailyCard">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">DAILY FOCUS</p>
+                <h2>今日推进</h2>
+              </div>
+              <span id="dailyCount">0 / 3</span>
+            </div>
+            <p class="muted">今天只照顾好三件事。完成一点，也是在认真向前走。</p>
+            <div class="daily-list" id="dailyList"></div>
+            <button class="secondary-button" id="refreshFocusButton" type="button">
+              重新安排今日任务
+            </button>
+          </section>
+
+          <section class="glass-card rhythm-card">
+            <p class="eyebrow">DAILY RHYTHM</p>
+            <h2>固定节奏</h2>
+            <div class="rhythm-row">
+              <time>07:30</time>
+              <div>
+                <strong>晨间推送</strong>
+                <span>确认今天的前三步</span>
+              </div>
+            </div>
+            <div class="rhythm-row">
+              <time>22:30</time>
+              <div>
+                <strong>晚间复盘</strong>
+                <span>记录完成、卡点和明日第一步</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="glass-card review-card">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">PIT REVIEW</p>
+                <h2>每日复盘</h2>
+              </div>
+              <span>22:30</span>
+            </div>
+            <form id="reviewForm">
+              <label>
+                今天完成了什么？
+                <textarea id="reviewDone" rows="2" placeholder="哪怕只完成了一小步"></textarea>
+              </label>
+              <label>
+                卡在哪里？
+                <textarea id="reviewBlocked" rows="2" placeholder="找到问题，比假装没问题更有用"></textarea>
+              </label>
+              <label>
+                明天的第一步
+                <textarea id="reviewNext" rows="2" placeholder="写一个足够小的动作"></textarea>
+              </label>
+              <button class="primary-button compact" type="submit">保存今日复盘 <b>✓</b></button>
+            </form>
+            <p class="save-hint" id="saveHint"></p>
+          </section>
+        </aside>
+      </section>
+
+      <section class="workspace-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PLAN STUDIO</p>
+            <h2>任务编辑器</h2>
+          </div>
+          <button class="small-action" id="addSubjectButton" type="button">+ 新增科目</button>
+        </div>
+        <p class="workspace-note">总任务、DDL 和每日任务都可以随时调整。修改后，今日安排和月历会立即更新。</p>
+        <div class="editor-list" id="editorList"></div>
+      </section>
+
+      <section class="workspace-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">MONTHLY VIEW</p>
+            <h2>接下来要做什么</h2>
+          </div>
+          <div class="calendar-nav">
+            <button class="icon-button" id="prevMonthButton" type="button" aria-label="上个月">‹</button>
+            <strong id="calendarTitle"></strong>
+            <button class="icon-button" id="nextMonthButton" type="button" aria-label="下个月">›</button>
+          </div>
+        </div>
+        <div class="calendar-card">
+          <div class="calendar-weekdays">
+            <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>一颗沙莉 · PERSONAL STUDY DASHBOARD</span>
+      <span>TAKE YOUR TIME, BUT KEEP GOING.</span>
+    </footer>
+
+    <div class="reward-overlay" id="rewardOverlay" aria-hidden="true">
+      <div class="reward-rays"></div>
+      <div class="reward-card">
+        <p>PACE UPDATE</p>
+        <strong>+1</strong>
+        <h2>这一小步，被好好记住了。</h2>
+        <span id="rewardText">你正在慢慢接近想成为的自己。</span>
+      </div>
+    </div>
+
+    <dialog class="edit-dialog" id="taskDialog">
+      <form method="dialog" id="taskDialogForm">
+        <p class="eyebrow">EDIT PLAN</p>
+        <h2 id="taskDialogTitle">新增任务</h2>
+        <label>
+          科目名称
+          <input id="subjectNameInput" type="text" required />
+        </label>
+        <label id="taskNameLabel">
+          任务名称
+          <input id="taskNameInput" type="text" />
+        </label>
+        <label>
+          截止日期
+          <input id="deadlineInput" type="date" required />
+        </label>
+        <div class="dialog-actions">
+          <button class="secondary-button" value="cancel" type="button" id="cancelDialogButton">取消</button>
+          <button class="primary-button compact" value="default" type="submit">保存 <b>✓</b></button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
